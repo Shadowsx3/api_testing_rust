@@ -1,2 +1,5 @@
 /target
 /Cargo.lock
+.idea
+tests.json
+tests.md

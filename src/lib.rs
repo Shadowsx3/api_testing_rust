@@ -1,3 +1,4 @@
-pub mod client;
-pub mod middleware;
-pub mod responses;
+pub mod base;
+pub mod models;
+pub mod services;
+pub mod utils;

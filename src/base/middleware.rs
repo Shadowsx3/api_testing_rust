@@ -1,11 +1,7 @@
-use reqwest::header::{HeaderMap};
 use reqwest::{Request, Response};
 use reqwest_middleware::{Middleware, Next};
 use task_local_extensions::Extensions;
-
-fn convert(headers: &HeaderMap) -> serde_json::Value {
-    format!("{:?}", headers).into()
-}
+use log::info;
 
 pub struct LoggingMiddleware;
 
@@ -17,10 +13,12 @@ impl Middleware for LoggingMiddleware {
         extensions: &mut Extensions,
         next: Next<'_>,
     ) -> reqwest_middleware::Result<Response> {
-        println!("Request to {} {}", req.method(), req.url());
-        println!("Headers: {}", convert(req.headers()));
+        info!("Request to {} {}",
+            req.method(),
+            req.url()
+        );
         let resp = next.run(req, extensions).await?;
-        println!("Got response {}", resp.status());
+        info!("Got response {}", resp.status());
         Ok(resp)
     }
 }
