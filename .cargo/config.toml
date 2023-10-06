@@ -30,8 +30,8 @@ rustflags = ["-Zshare-generics=n"]
 [alias]
 next = "nextest run"
 next-o = "nextest run --no-capture"
-integration = "test --release --test * -- -Z unstable-options --report-time"
-integration-j = "test --release --test * -- -Z unstable-options --report-time --format json"
-integration-o = "test --release --test * -- -Z unstable-options --report-time --show-output"
+integration = "test --release --no-fail-fast --test * -- -Z unstable-options --report-time"
+integration-j = "test --release --no-fail-fast --test * -- -Z unstable-options --report-time --format json"
+integration-o = "test --release --no-fail-fast --test * -- -Z unstable-options --report-time --show-output"
 test-unit = "test --release --lib -- -Z unstable-options --report-time"
 test-doc = "test --release --doc"
