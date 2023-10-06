@@ -27,7 +27,8 @@ rustflags = [
 linker = "rust-lld.exe"
 rustflags = ["-Zshare-generics=n"]
 
-# Optional: Uncommenting the following improves compile times, but reduces the amount of debug info to 'line number tables only'
-# In most cases the gains are negligible, but if you are on macos and have slow compile times you should see significant gains.
-#[profile.dev]
-#debug = 1
+[alias]
+integration = "test --release --test * -- -Z unstable-options --report-time --format json"
+integration-o = "test --release --test * -- -Z unstable-options --report-time --nocapture"
+test-unit = "test --release --lib -- -Z unstable-options --report-time"
+test-doc = "test --release --doc"

@@ -13,7 +13,7 @@ cargo test --test * -- -Z unstable-options --report-time --format json > tests.j
 Windows integration tests
 ```bash
 cargo build --release
-cargo test --test * -- -Z unstable-options --report-time --format json | Out-File -Encoding default tests.json
+cargo test --release --test * -- -Z unstable-options --report-time --format json | Out-File -Encoding default tests.json
 markdown-test-report tests.json -o tests.md
 ```
 

@@ -5,8 +5,12 @@ use reqwest::{Client, Proxy};
 use reqwest_middleware::{ClientBuilder, ClientWithMiddleware};
 use rstest::*;
 use std::time::Duration;
-use dotenv::var;
-use log::{info, LevelFilter};
+use log::{info};
+
+fn setup_logger() {
+    dotenv::dotenv().ok();
+    let _ = env_logger::builder().format_target(false).is_test(true).try_init();
+}
 
 #[fixture]
 pub fn default_headers() -> HeaderMap {
@@ -21,11 +25,6 @@ pub fn proxy() -> ProxyConfig {
     ProxyConfig::new()
 }
 
-fn setup_logger() {
-    dotenv::dotenv().ok();
-    let _ = env_logger::builder().is_test(false).try_init();
-}
-
 #[fixture]
 #[once]
 pub fn client(default_headers: HeaderMap, proxy: ProxyConfig) -> ClientWithMiddleware {
@@ -34,6 +33,7 @@ pub fn client(default_headers: HeaderMap, proxy: ProxyConfig) -> ClientWithMiddl
     info!("Client created with: Headers: {:?}", default_headers.clone());
     let mut client_builder = Client::builder()
         .default_headers(default_headers)
+        .cookie_store(true)
         .timeout(Duration::from_secs(60));
 
     if proxy.is_enabled() {
