@@ -50,5 +50,5 @@ pub fn client(default_headers: HeaderMap, proxy: ProxyConfig) -> ClientWithMiddl
 
 #[fixture]
 pub fn base_url() -> &'static str {
-    "https://datausa.io/api/data"
+    "https://restful-booker.herokuapp.com"
 }

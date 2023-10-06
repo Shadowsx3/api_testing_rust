@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="nextest-run" tests="2" failures="0" errors="0" uuid="7a0d9a22-9739-4cdc-8cf5-1ef52810d3f4" timestamp="2023-10-06T19:30:47.069+00:00" time="2.035">
+    <testsuite name="api_testing_rust::booking_tests" tests="2" disabled="0" errors="0" failures="0">
+        <testcase name="should_get_booking" classname="api_testing_rust::booking_tests" timestamp="2023-10-06T19:30:47.070+00:00" time="1.366">
+            <system-out></system-out>
+            <system-err></system-err>
+        </testcase>
+        <testcase name="should_post_booking" classname="api_testing_rust::booking_tests" timestamp="2023-10-06T19:30:48.435+00:00" time="0.669">
+            <system-out></system-out>
+            <system-err></system-err>
+        </testcase>
+    </testsuite>
+</testsuites>
