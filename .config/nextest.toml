@@ -1,5 +1,5 @@
 [store]
-dir = "target/nextest"
+dir = "nextest"
 
 [profile.default]
 slow-timeout = { period = "60s" }

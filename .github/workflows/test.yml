@@ -10,6 +10,8 @@ jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    env:
+      RESULTS_PATH: nextest/default
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,9 +32,15 @@ jobs:
       - name: Run tests
         run: cargo nextest run --release
 
+      - name: Generate Report
+        id: xunit-viewer
+        uses: AutoModality/action-xunit-viewer@v1
+        with:
+          results: ${{ env.RESULTS_PATH }}
+
       - name: Upload Test Reports
         uses: actions/upload-artifact@v3
         with:
           name: report
-          path: target/nextest/default/*
+          path: ${{ env.RESULTS_PATH }}
 

@@ -3,3 +3,4 @@
 tests.json
 tests.md
 .env
+nextest
