@@ -11,5 +11,6 @@ fail-fast = false
 path = "junit.xml"
 report-name = "nextest-run"
 
-store-success-output = true
-store-failure-output = true
+[[profile.default.overrides]]
+filter = 'test(important-test)'
+junit.store-success-output = true

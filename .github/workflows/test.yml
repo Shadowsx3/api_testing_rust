@@ -1,0 +1,38 @@
+name: TEST
+
+on:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2.2.1
+        with:
+          shared-key: "test-artifacts"
+          save-if: ${{ github.ref == 'refs/heads/master' }}
+
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
+
+      - name: Copy example.env to .env
+        run: cp example.env .env
+
+      - name: Run tests
+        run: cargo nextest run --release
+
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: target/nextest/default/*
+
