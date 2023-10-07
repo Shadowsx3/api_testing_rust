@@ -1,37 +1,5 @@
-# Add the contents of this file to `config.toml` to enable "fast build" configuration. Please read the notes below.
-
-# NOTE: For maximum performance, build using a nightly compiler
-# If you are using rust stable, remove the "-Zshare-generics=y" below.
-
-[target.x86_64-unknown-linux-gnu]
-linker = "clang"
-rustflags = ["-Clink-arg=-fuse-ld=lld", "-Zshare-generics=y"]
-
-# NOTE: you must install [Mach-O LLD Port](https://lld.llvm.org/MachO/index.html) on mac. you can easily do this by installing llvm which includes lld with the "brew" package manager:
-# `brew install llvm`
-[target.x86_64-apple-darwin]
-rustflags = [
-    "-C",
-    "link-arg=-fuse-ld=/usr/local/opt/llvm/bin/ld64.lld",
-    "-Zshare-generics=y",
-]
-
-[target.aarch64-apple-darwin]
-rustflags = [
-    "-C",
-    "link-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld",
-    "-Zshare-generics=y",
-]
-
-[target.x86_64-pc-windows-msvc]
-linker = "rust-lld.exe"
-rustflags = ["-Zshare-generics=n"]
-
 [alias]
-next = "nextest run"
-next-o = "nextest run --no-capture"
-integration = "test --release --no-fail-fast --test * -- -Z unstable-options --report-time"
-integration-j = "test --release --no-fail-fast --test * -- -Z unstable-options --report-time --format json"
-integration-o = "test --release --no-fail-fast --test * -- -Z unstable-options --report-time --show-output"
+next = "nextest run --release"
+next-o = "nextest run --release --no-capture"
 test-unit = "test --release --lib -- -Z unstable-options --report-time"
 test-doc = "test --release --doc"

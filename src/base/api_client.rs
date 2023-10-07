@@ -6,10 +6,15 @@ use reqwest_middleware::{ClientBuilder, ClientWithMiddleware};
 use rstest::*;
 use std::time::Duration;
 use log::{info};
+use std::sync::Once;
+
+static START: Once = Once::new();
 
 fn setup_logger() {
-    dotenv::dotenv().ok();
-    let _ = env_logger::builder().format_target(false).is_test(true).try_init();
+    START.call_once(|| {
+        dotenv::dotenv().ok();
+        let _ = env_logger::builder().format_target(false).is_test(true).try_init();
+    });
 }
 
 #[fixture]
@@ -26,7 +31,6 @@ pub fn proxy() -> ProxyConfig {
 }
 
 #[fixture]
-#[once]
 pub fn client(default_headers: HeaderMap, proxy: ProxyConfig) -> ClientWithMiddleware {
     setup_logger();
 

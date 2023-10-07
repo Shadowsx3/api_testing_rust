@@ -13,7 +13,7 @@ use api_testing_rust::models::shared::booking::Bookingdates;
 
 #[rstest]
 #[tokio::test]
-async fn should_get_booking(client: &ClientWithMiddleware, base_url: &str) {
+async fn should_get_booking(client: ClientWithMiddleware, base_url: &str) {
     let booking_service = BookingService::new(&client, base_url.to_string());
     let response = booking_service.get_bookings().await.unwrap();
 
@@ -26,7 +26,7 @@ async fn should_get_booking(client: &ClientWithMiddleware, base_url: &str) {
 
 #[rstest]
 #[tokio::test]
-async fn should_post_booking(client: &ClientWithMiddleware, base_url: &str) {
+async fn should_post_booking(client: ClientWithMiddleware, base_url: &str) {
     let booking_service = BookingService::new(&client, base_url.to_string());
     let response = booking_service
         .post_bookings(&BookingRequest {
