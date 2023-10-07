@@ -1,7 +1,7 @@
+use log::info;
 use reqwest::{Request, Response};
 use reqwest_middleware::{Middleware, Next};
 use task_local_extensions::Extensions;
-use log::info;
 
 pub struct LoggingMiddleware;
 
@@ -13,12 +13,11 @@ impl Middleware for LoggingMiddleware {
         extensions: &mut Extensions,
         next: Next<'_>,
     ) -> reqwest_middleware::Result<Response> {
-        info!("Request to {} {}",
-            req.method(),
-            req.url()
-        );
+        info!("Request to {} {}", req.method(), req.url());
+
         let resp = next.run(req, extensions).await?;
-        info!("Got response {}", resp.status());
+
+        info!("Received response with status: {}", resp.status());
         Ok(resp)
     }
 }

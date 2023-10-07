@@ -8,12 +8,11 @@ pub struct BookingService<'a> {
 }
 
 impl<'a> BookingService<'a> {
-    pub fn new(client: &'a ClientWithMiddleware, base_url: String) -> Self {
-        let path = format!("{}{}", &base_url, "/booking");
-        Self { client, path }
+    pub fn new(client: &'a ClientWithMiddleware, base_url: &'a str) -> Self {
+        Self { client, path: format!("{}/booking", base_url) }
     }
 
-    pub fn get_path(&self) -> &String {
+    pub fn get_path(&self) -> &str {
         &self.path
     }
 
