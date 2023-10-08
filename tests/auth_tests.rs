@@ -1,4 +1,3 @@
-use log::info;
 use api_testing_rust::base::api_client::client;
 use api_testing_rust::base::types::cookie_client::CookieClient;
 use api_testing_rust::models::requests::auth_requests::AuthRequest;
@@ -11,9 +10,9 @@ use rstest::*;
 #[rstest]
 #[tokio::test]
 async fn should_auth_successfully(client: CookieClient) {
-    let auth_service = AuthService::new(&client);
+    let mut auth_service = AuthService::new(&client);
     let response = auth_service
-        .auth(AuthRequest {
+        .get_auth(AuthRequest {
             username: "admin".to_string(),
             password: "password123".to_string(),
         })
@@ -36,7 +35,7 @@ async fn should_auth_successfully(client: CookieClient) {
 async fn should_trow_auth_error(client: CookieClient) {
     let auth_service = AuthService::new(&client);
     let response = auth_service
-        .auth(AuthRequest {
+        .get_auth(AuthRequest {
             username: "admin".to_string(),
             password: "password".to_string(),
         })
@@ -45,4 +44,22 @@ async fn should_trow_auth_error(client: CookieClient) {
     let json_error = response.unwrap().json::<AuthErrorResponse>().await.unwrap();
 
     assert_eq!(json_error.reason, "Bad credentials");
+}
+
+#[rstest]
+#[tokio::test]
+async fn should_auth_successfully_and_set_cookies(client: CookieClient) {
+    let mut auth_service = AuthService::new(&client);
+    auth_service
+        .auth(AuthRequest {
+            username: "admin".to_string(),
+            password: "password123".to_string(),
+        })
+        .await;
+    let cookies = client
+        .cookie_jar
+        .cookies(&auth_service.get_base_url())
+        .unwrap();
+    assert_eq!(cookies.len(), 21);
+    assert_eq!(cookies, format!("token={}", auth_service.get_token().unwrap()));
 }
