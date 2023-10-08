@@ -5,14 +5,14 @@ edition = "2021"
 
 [dependencies]
 # Async libraries
-tokio = { version = "1.32.0", features = ["full"] }
+tokio = { version = "1.32.0", features = ["macros"] }
 futures = "0.3.28"
 async-trait = "0.1.73"
 
 # Test dependencies
 rstest = "0.18.2"
 rstest_reuse = "0.6"
-test-with = "0.10.4"
+test-with = "0.10.6"
 speculoos = "0.11.0"
 
 # Api related
@@ -37,5 +37,6 @@ opt-level = 1
 opt-level = 3
 
 [profile.release]
-opt-level = 3
+opt-level = 2
+codegen-units = 8
 

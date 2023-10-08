@@ -1,5 +1,5 @@
 [alias]
 next = "nextest run --release"
 next-o = "nextest run --release --no-capture"
-test-unit = "test --release --lib -- -Z unstable-options --report-time"
+test-unit = "test --release --lib"
 test-doc = "test --release --doc"

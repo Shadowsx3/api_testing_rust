@@ -2187,9 +2187,9 @@ dependencies = [
 
 [[package]]
 name = "test-with"
-version = "0.10.4"
+version = "0.10.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e9851c6a0044b806aac020deb979dc11267a19b62b32ce174583d2b71b51886"
+checksum = "64fa9b52fca0e00d61c3746e7d6e7ca5d4d35093055320818adc4350eb3e9333"
 dependencies = [
  "byte-unit",
  "num_cpus",
@@ -2288,7 +2288,6 @@ dependencies = [
  "libc",
  "mio",
  "num_cpus",
- "parking_lot",
  "pin-project-lite",
  "signal-hook-registry",
  "socket2 0.5.4",

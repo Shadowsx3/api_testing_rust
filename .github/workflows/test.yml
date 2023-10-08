@@ -2,6 +2,11 @@ name: TEST
 
 on:
   workflow_dispatch:
+    inputs:
+      run_generate_report:
+        description: 'Whether to run the Generate Report step'
+        required: false
+        default: 'true'
 
 env:
   CARGO_TERM_COLOR: always
@@ -10,21 +15,21 @@ jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
-    env:
-      RESULTS_PATH: nextest/default
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Cache dependencies
-        uses: Swatinem/rust-cache@v2.2.1
+        uses: Swatinem/rust-cache@v2
         with:
           shared-key: "test-artifacts"
           save-if: ${{ github.ref == 'refs/heads/master' }}
 
       - name: Install nextest
-        uses: taiki-e/install-action@nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
 
       - name: Copy example.env to .env
         run: cp example.env .env
@@ -32,15 +37,37 @@ jobs:
       - name: Run tests
         run: cargo nextest run --release
 
-      - name: Generate Report
-        id: xunit-viewer
-        uses: AutoModality/action-xunit-viewer@v1
-        with:
-          results: ${{ env.RESULTS_PATH }}
-
       - name: Upload Test Reports
         uses: actions/upload-artifact@v3
         with:
           name: report
-          path: ${{ env.RESULTS_PATH }}
+          path: nextest/default
 
+  generate-report:
+    name: Generate and Upload Test Report
+    runs-on: ubuntu-latest
+    needs: run-tests
+    if: ${{ github.event.inputs.run_generate_report != 'false' || github.event.inputs.run_generate_report != '0' }}
+    steps:
+      - name: Download Test Reports
+        uses: actions/download-artifact@v3
+        with:
+          name: report
+          path: reports/report
+
+      - name: Merge Test Reports
+        run: |
+          mkdir -p reports/all
+          cp reports/report/*.xml reports/all/
+
+      - name: Generate Report
+        id: xunit-viewer
+        uses: AutoModality/action-xunit-viewer@v1
+        with:
+          results: reports
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-report
+          path: reports/index.html
