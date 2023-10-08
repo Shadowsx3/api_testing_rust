@@ -2,12 +2,14 @@ use crate::base::middleware::LoggingMiddleware;
 use crate::base::types::proxy_config::ProxyConfig;
 use log::Level::Info;
 use log::{info, log_enabled};
+use reqwest::cookie::Jar;
 use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, CONTENT_TYPE};
 use reqwest::{Client, Proxy};
-use reqwest_middleware::{ClientBuilder, ClientWithMiddleware};
+use reqwest_middleware::ClientBuilder;
 use rstest::*;
-use std::sync::Once;
+use std::sync::{Arc, Once};
 use std::time::Duration;
+use crate::base::types::cookie_client::CookieClient;
 
 static START: Once = Once::new();
 
@@ -37,15 +39,18 @@ pub fn proxy() -> ProxyConfig {
 }
 
 #[fixture]
-pub fn client(default_headers: &HeaderMap, proxy: &ProxyConfig) -> ClientWithMiddleware {
+pub fn client(default_headers: &HeaderMap, proxy: &ProxyConfig) -> CookieClient {
     setup_logger();
 
     info!(
         "Client created with: Headers: {:?}",
         default_headers.clone()
     );
+    let jar = Arc::new(Jar::default());
+
     let mut client_builder = Client::builder()
         .default_headers(default_headers.clone())
+        .cookie_provider(Arc::clone(&jar))
         .cookie_store(true)
         .timeout(Duration::from_secs(60));
 
@@ -63,7 +68,7 @@ pub fn client(default_headers: &HeaderMap, proxy: &ProxyConfig) -> ClientWithMid
         client_builder = client_builder.with(LoggingMiddleware);
     }
 
-    client_builder.build()
+    CookieClient {client: client_builder.build(), cookie_jar: jar}
 }
 
 #[fixture]

@@ -1,8 +1,12 @@
-use crate::models::requests::booking_requests::BookingRequest;
-use reqwest::Response;
-use reqwest_middleware::{ClientWithMiddleware, Result};
 use crate::base::api_client::base_url;
+use crate::base::types::cookie_client::CookieClient;
+use crate::models::requests::booking_requests::BookingRequest;
 use crate::services::service::generate_service;
+use reqwest::cookie::Jar;
+use reqwest::Response;
+use reqwest::Url;
+use reqwest_middleware::{ClientWithMiddleware, Result};
+use std::sync::Arc;
 
 generate_service!(BookingService, "/booking");
 

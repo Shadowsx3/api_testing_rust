@@ -4,7 +4,7 @@ dir = "nextest"
 [profile.default]
 slow-timeout = { period = "60s" }
 failure-output = "immediate-final"
-retries = { backoff = "exponential", count = 2, delay = "1s", jitter = true, max-delay = "10s" }
+retries = { backoff = "exponential", count = 1, delay = "1s", jitter = true, max-delay = "10s" }
 fail-fast = false
 
 [profile.default.junit]

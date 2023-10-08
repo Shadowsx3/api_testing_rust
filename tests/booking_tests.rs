@@ -5,15 +5,15 @@ use api_testing_rust::models::responses::booking_responses::{
 };
 use api_testing_rust::services::booking_service::BookingService;
 use pretty_assertions::assert_eq;
-use reqwest_middleware::ClientWithMiddleware;
 use rstest::*;
 use speculoos::assert_that;
 use speculoos::prelude::*;
+use api_testing_rust::base::types::cookie_client::CookieClient;
 use api_testing_rust::models::shared::booking::Bookingdates;
 
 #[rstest]
 #[tokio::test]
-async fn should_get_booking(client: ClientWithMiddleware) {
+async fn should_get_booking(client: CookieClient) {
     let booking_service = BookingService::new(&client);
     let response = booking_service.get_bookings().await.unwrap();
 
@@ -26,7 +26,7 @@ async fn should_get_booking(client: ClientWithMiddleware) {
 
 #[rstest]
 #[tokio::test]
-async fn should_post_booking(client: ClientWithMiddleware) {
+async fn should_post_booking(client: CookieClient) {
     let booking_service = BookingService::new(&client);
     let response = booking_service
         .post_bookings(&BookingRequest {
