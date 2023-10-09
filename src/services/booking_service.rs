@@ -1,13 +1,9 @@
-use crate::base::api_client::base_url;
-use crate::base::types::cookie_client::CookieClient;
+use crate::macros::service_macro::{generate_service, import_statements};
 use crate::models::requests::booking_requests::BookingRequest;
-use crate::services::service::generate_service;
-use reqwest::cookie::Jar;
 use reqwest::Response;
-use reqwest::Url;
-use reqwest_middleware::{ClientWithMiddleware, Result};
-use std::sync::Arc;
+use reqwest_middleware::Result;
 
+import_statements!();
 generate_service!(BookingService, "/booking");
 
 impl<'a> BookingService<'a> {

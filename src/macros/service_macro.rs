@@ -1,3 +1,14 @@
+macro_rules! import_statements {
+    () => {
+        use crate::base::api_client::base_url;
+        use crate::base::types::cookie_client::CookieClient;
+        use std::sync::Arc;
+        use reqwest::cookie::Jar;
+        use reqwest::Url;
+        use reqwest_middleware::ClientWithMiddleware;
+    };
+}
+
 macro_rules! generate_service {
     ($service_name:ident, $endpoint:expr, $additional_data:ty) => {
         pub struct $service_name<'a> {
@@ -101,3 +112,4 @@ macro_rules! generate_service {
     };
 }
 pub(crate) use generate_service;
+pub(crate) use import_statements;

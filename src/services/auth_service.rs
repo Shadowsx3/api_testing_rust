@@ -1,17 +1,12 @@
-use crate::base::api_client::base_url;
-use crate::base::types::cookie_client::CookieClient;
+use crate::macros::service_macro::{generate_service, import_statements};
 use crate::models::requests::auth_requests::AuthRequest;
 use crate::models::responses::auth_responses::AuthResponse;
-use crate::services::service::generate_service;
-use reqwest::cookie::{CookieStore, Jar};
-use reqwest::{Response, Url};
-use reqwest_middleware::{ClientWithMiddleware, Result};
-use std::sync::Arc;
+use crate::models::shared::auth_token::AuthToken;
+use reqwest::cookie::CookieStore;
+use reqwest::Response;
+use reqwest_middleware::Result;
 
-pub struct AuthToken {
-    pub token: String,
-}
-
+import_statements!();
 generate_service!(AuthService, "/auth", AuthToken);
 
 impl<'a> AuthService<'a> {
@@ -42,7 +37,7 @@ impl<'a> AuthService<'a> {
     }
 
     pub fn get_token(&self) -> Option<String> {
-        if let Some(auth_token) = self.data.as_ref() {
+        if let Some(auth_token) = self.get_data() {
             return Some(auth_token.token.clone());
         }
         None
